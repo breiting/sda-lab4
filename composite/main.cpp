@@ -18,76 +18,83 @@ Use case (example):
 namespace patterns {
 
 class Node {
-public:
-  virtual ~Node() = default;
-  virtual std::string Name() const = 0;
-  virtual std::size_t Size() const = 0;
-  virtual void Print(int indent) const = 0;
+   public:
+    virtual ~Node() = default;
+    virtual std::string Name() const = 0;
+    virtual std::size_t Size() const = 0;
+    virtual void Print(int indent) const = 0;
 };
 
 class File final : public Node {
-public:
-  File(std::string name, std::size_t size)
-      : m_Name(std::move(name)), m_Size(size) {}
+   public:
+    File(std::string name, std::size_t size) : m_Name(std::move(name)), m_Size(size) {
+    }
 
-  std::string Name() const override { return m_Name; }
-  std::size_t Size() const override { return m_Size; }
+    std::string Name() const override {
+        return m_Name;
+    }
+    std::size_t Size() const override {
+        return m_Size;
+    }
 
-  void Print(int indent) const override {
-    std::cout << std::string(static_cast<std::size_t>(indent), ' ') << "- "
-              << m_Name << " (" << m_Size << " bytes)\n";
-  }
+    void Print(int indent) const override {
+        std::cout << std::string(static_cast<std::size_t>(indent), ' ') << "- " << m_Name << " (" << m_Size
+                  << " bytes)\n";
+    }
 
-private:
-  std::string m_Name;
-  std::size_t m_Size;
+   private:
+    std::string m_Name;
+    std::size_t m_Size;
 };
 
 class Directory final : public Node {
-public:
-  explicit Directory(std::string name) : m_Name(std::move(name)) {}
-
-  void Add(std::unique_ptr<Node> child) {
-    m_Children.push_back(std::move(child));
-  }
-
-  std::string Name() const override { return m_Name; }
-
-  std::size_t Size() const override {
-    std::size_t total = 0;
-    for (const auto &c : m_Children) {
-      total += c->Size();
+   public:
+    explicit Directory(std::string name) : m_Name(std::move(name)) {
     }
-    return total;
-  }
 
-  void Print(int indent) const override {
-    std::cout << std::string(static_cast<std::size_t>(indent), ' ') << "+ "
-              << m_Name << " (" << Size() << " bytes)\n";
-    for (const auto &c : m_Children) {
-      c->Print(indent + 2);
+    void Add(std::unique_ptr<Node> child) {
+        m_Children.push_back(std::move(child));
     }
-  }
 
-private:
-  std::string m_Name;
-  std::vector<std::unique_ptr<Node>> m_Children;
+    std::string Name() const override {
+        return m_Name;
+    }
+
+    std::size_t Size() const override {
+        std::size_t total = 0;
+        for (const auto &c : m_Children) {
+            total += c->Size();
+        }
+        return total;
+    }
+
+    void Print(int indent) const override {
+        std::cout << std::string(static_cast<std::size_t>(indent), ' ') << "+ " << m_Name << " (" << Size()
+                  << " bytes)\n";
+        for (const auto &c : m_Children) {
+            c->Print(indent + 2);
+        }
+    }
+
+   private:
+    std::string m_Name;
+    std::vector<std::unique_ptr<Node>> m_Children;
 };
 
-} // namespace patterns
+}  // namespace patterns
 
 int main() {
-  using namespace patterns;
+    using namespace patterns;
 
-  auto root = std::make_unique<Directory>("root");
-  root->Add(std::make_unique<File>("README.md", 1200));
+    auto root = std::make_unique<Directory>("root");
+    root->Add(std::make_unique<File>("README.md", 1200));
 
-  auto src = std::make_unique<Directory>("src");
-  src->Add(std::make_unique<File>("main.cpp", 3400));
-  src->Add(std::make_unique<File>("util.cpp", 800));
+    auto src = std::make_unique<Directory>("src");
+    src->Add(std::make_unique<File>("main.cpp", 3400));
+    src->Add(std::make_unique<File>("util.cpp", 800));
 
-  root->Add(std::move(src));
+    root->Add(std::move(src));
 
-  root->Print(0);
-  std::cout << "Total size: " << root->Size() << " bytes\n";
+    root->Print(0);
+    std::cout << "Total size: " << root->Size() << " bytes\n";
 }

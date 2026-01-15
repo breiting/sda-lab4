@@ -19,45 +19,45 @@ namespace patterns {
 
 // Target interface (what the new code expects)
 class ILogger {
-public:
-  virtual ~ILogger() = default;
-  virtual void LogInfo(const std::string &msg) = 0;
+   public:
+    virtual ~ILogger() = default;
+    virtual void LogInfo(const std::string &msg) = 0;
 };
 
 // Adaptee (legacy / incompatible)
 class LegacyLogger {
-public:
-  void Write(const char *message) {
-    std::cout << "[Legacy] " << message << "\n";
-  }
+   public:
+    void Write(const char *message) {
+        std::cout << "[Legacy] " << message << "\n";
+    }
 };
 
 // Adapter
 class LegacyLoggerAdapter final : public ILogger {
-public:
-  explicit LegacyLoggerAdapter(std::shared_ptr<LegacyLogger> legacy)
-      : m_Legacy(std::move(legacy)) {}
+   public:
+    explicit LegacyLoggerAdapter(std::shared_ptr<LegacyLogger> legacy) : m_Legacy(std::move(legacy)) {
+    }
 
-  void LogInfo(const std::string &msg) override {
-    m_Legacy->Write(msg.c_str());
-  }
+    void LogInfo(const std::string &msg) override {
+        m_Legacy->Write(msg.c_str());
+    }
 
-private:
-  std::shared_ptr<LegacyLogger> m_Legacy;
+   private:
+    std::shared_ptr<LegacyLogger> m_Legacy;
 };
 
 static void BusinessLogic(ILogger &logger) {
-  logger.LogInfo("Starting simulation step...");
-  logger.LogInfo("Finished simulation step.");
+    logger.LogInfo("Starting simulation step...");
+    logger.LogInfo("Finished simulation step.");
 }
 
-} // namespace patterns
+}  // namespace patterns
 
 int main() {
-  using namespace patterns;
+    using namespace patterns;
 
-  auto legacy = std::make_shared<LegacyLogger>();
-  LegacyLoggerAdapter adapter(legacy);
+    auto legacy = std::make_shared<LegacyLogger>();
+    LegacyLoggerAdapter adapter(legacy);
 
-  BusinessLogic(adapter);
+    BusinessLogic(adapter);
 }

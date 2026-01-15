@@ -17,48 +17,48 @@ namespace patterns {
 
 // Subsystem classes (complex internals)
 class ShaderCompiler {
-public:
-  void Compile(const std::string &shaderName) {
-    std::cout << "Compiling shader: " << shaderName << "\n";
-  }
+   public:
+    void Compile(const std::string &shaderName) {
+        std::cout << "Compiling shader: " << shaderName << "\n";
+    }
 };
 
 class MeshUploader {
-public:
-  void Upload(const std::string &meshName) {
-    std::cout << "Uploading mesh: " << meshName << "\n";
-  }
+   public:
+    void Upload(const std::string &meshName) {
+        std::cout << "Uploading mesh: " << meshName << "\n";
+    }
 };
 
 class Renderer {
-public:
-  void Draw(const std::string &meshName) {
-    std::cout << "Drawing mesh: " << meshName << "\n";
-  }
+   public:
+    void Draw(const std::string &meshName) {
+        std::cout << "Drawing mesh: " << meshName << "\n";
+    }
 };
 
 // Facade
 class RenderFacade {
-public:
-  RenderFacade() = default;
+   public:
+    RenderFacade() = default;
 
-  void RenderFrame(const std::string &shader, const std::string &mesh) {
-    m_Compiler.Compile(shader);
-    m_Uploader.Upload(mesh);
-    m_Renderer.Draw(mesh);
-  }
+    void RenderFrame(const std::string &shader, const std::string &mesh) {
+        m_Compiler.Compile(shader);
+        m_Uploader.Upload(mesh);
+        m_Renderer.Draw(mesh);
+    }
 
-private:
-  ShaderCompiler m_Compiler;
-  MeshUploader m_Uploader;
-  Renderer m_Renderer;
+   private:
+    ShaderCompiler m_Compiler;
+    MeshUploader m_Uploader;
+    Renderer m_Renderer;
 };
 
-} // namespace patterns
+}  // namespace patterns
 
 int main() {
-  using namespace patterns;
+    using namespace patterns;
 
-  RenderFacade engine;
-  engine.RenderFrame("basic_lit", "circuit_board");
+    RenderFacade engine;
+    engine.RenderFrame("basic_shader", "3d_mesh");
 }

@@ -17,59 +17,63 @@ based on the file type (JSON, XML, ...).
 
 namespace patterns {
 
-// Product
+// Interface
 class Document {
-public:
-  virtual ~Document() = default;
-  virtual std::string Render() const = 0;
+   public:
+    virtual ~Document() = default;
+    virtual std::string Render() const = 0;
 };
 
 class JsonDocument final : public Document {
-public:
-  std::string Render() const override { return "Rendering JSON document"; }
+   public:
+    std::string Render() const override {
+        return "Rendering JSON document";
+    }
 };
 
 class XmlDocument final : public Document {
-public:
-  std::string Render() const override { return "Rendering XML document"; }
+   public:
+    std::string Render() const override {
+        return "Rendering XML document";
+    }
 };
 
 // Creator
 class DocumentLoader {
-public:
-  virtual ~DocumentLoader() = default;
+   public:
+    virtual ~DocumentLoader() = default;
 
-  // Factory Method
-  virtual std::unique_ptr<Document> Create() const = 0;
+    // Factory Method
+    virtual std::unique_ptr<Document> Create() const = 0;
 
-  void LoadAndRender() const {
-    auto doc = Create();
-    std::cout << doc->Render() << "\n";
-  }
+    void LoadAndRender() const {
+        auto doc = Create();
+        std::cout << doc->Render() << "\n";
+    }
 };
 
 class JsonLoader final : public DocumentLoader {
-public:
-  std::unique_ptr<Document> Create() const override {
-    return std::make_unique<JsonDocument>();
-  }
+   public:
+    std::unique_ptr<Document> Create() const override {
+        return std::make_unique<JsonDocument>();
+    }
 };
 
 class XmlLoader final : public DocumentLoader {
-public:
-  std::unique_ptr<Document> Create() const override {
-    return std::make_unique<XmlDocument>();
-  }
+   public:
+    std::unique_ptr<Document> Create() const override {
+        return std::make_unique<XmlDocument>();
+    }
 };
 
-} // namespace patterns
+}  // namespace patterns
 
 int main() {
-  using namespace patterns;
+    using namespace patterns;
 
-  JsonLoader json;
-  XmlLoader xml;
+    JsonLoader json;
+    XmlLoader xml;
 
-  json.LoadAndRender();
-  xml.LoadAndRender();
+    json.LoadAndRender();
+    xml.LoadAndRender();
 }
