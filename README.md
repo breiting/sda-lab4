@@ -159,6 +159,20 @@ For each pattern:
 - ISO C++ Core Guidelines
   https://isocpp.github.io/CppCoreGuidelines/
 
+- Egon Teiniker's lecture notes
+  https://github.com/teiniker/teiniker-lectures-embedded-softwaredesign
+
+## Practice and exercises
+
+- Packaging exercise (composite pattern)
+  https://github.com/teiniker/teiniker-lectures-embedded-softwaredesign/tree/master/design-patterns/structural/composite/packaging-exercise
+
+- File service (decorator pattern)
+  https://github.com/teiniker/teiniker-lectures-embedded-softwaredesign/tree/master/design-patterns/structural/decorator/file-service-exercise
+
+- List builder (builder pattern)
+  https://github.com/teiniker/teiniker-lectures-embedded-softwaredesign/tree/master/design-patterns/creational/builder/list-builder-exercise
+
 ## Note
 
 Design patterns are tools, not goals.
